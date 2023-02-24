@@ -13,8 +13,6 @@ const refs = {
 btnStart.disabled = true;
 let selectedDate = null;
 
-btnStart.addEventListener('click', onStartTimer);
-
 const options = {
   enableTime: true,
   time_24hr: true,
@@ -25,6 +23,7 @@ const options = {
       ? Report.failure('Please choose a date in the future.')
       : (btnStart.disabled = false);
     selectedDate = selectedDates[0];
+    btnStart.addEventListener('click', onStartTimer);
   },
 };
 
