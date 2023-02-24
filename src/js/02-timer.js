@@ -1,5 +1,6 @@
 import flatpickr from 'flatpickr';
 import 'flatpickr/dist/flatpickr.min.css';
+import { Report } from 'notiflix/build/notiflix-report-aio';
 
 const btnStart = document.querySelector('button[data-start]');
 const refs = {
@@ -21,7 +22,7 @@ const options = {
   minuteIncrement: 1,
   onClose(selectedDates) {
     selectedDates[0] - options.defaultDate < 0
-      ? window.alert('Please choose a date in the future')
+      ? Report.failure('Please choose a date in the future.')
       : (btnStart.disabled = false);
     selectedDate = selectedDates[0];
   },
