@@ -12,20 +12,20 @@ function formSubmitHandler(e) {
   const delay = Number(refs.delay.value);
   const step = Number(refs.step.value);
   const amount = Number(refs.amount.value);
-  createPromisesNumbers(amount).reduce((promiseTimeDelay, promiseNumber) => {
-    createPromise(promiseNumber, promiseTimeDelay)
+  getPromisesPositions(amount).reduce((delay, position) => {
+    createPromise(position, delay)
       .then(({ position, delay }) => {
         console.log(`✅ Fulfilled promise ${position} in ${delay}ms`);
       })
       .catch(({ position, delay }) => {
         console.log(`❌ Rejected promise ${position} in ${delay}ms`);
       });
-    return (acc += step);
+    return (delay += step);
   }, delay);
   e.currentTarget.reset();
 }
 
-function createPromisesNumbers(n) {
+function getPromisesPositions(n) {
   const promisesNumbers = [];
   for (i = 1; i <= n; i += 1) {
     promisesNumbers.push(i);
