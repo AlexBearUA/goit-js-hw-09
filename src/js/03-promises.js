@@ -12,8 +12,8 @@ function formSubmitHandler(e) {
   const delay = Number(refs.delay.value);
   const step = Number(refs.step.value);
   const amount = Number(refs.amount.value);
-  createPromisesNumbers(amount).reduce((acc, promise) => {
-    createPromise(promise, acc)
+  createPromisesNumbers(amount).reduce((promiseTimeDelay, promiseNumber) => {
+    createPromise(promiseNumber, promiseTimeDelay)
       .then(({ position, delay }) => {
         console.log(`✅ Fulfilled promise ${position} in ${delay}ms`);
       })
