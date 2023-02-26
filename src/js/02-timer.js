@@ -19,7 +19,7 @@ const options = {
   defaultDate: new Date(),
   minuteIncrement: 1,
   onClose(selectedDates) {
-    selectedDates[0] - options.defaultDate < 0
+    selectedDates[0] - this.defaultDate < 0
       ? Report.failure('Please choose a date in the future.')
       : (btnStart.disabled = false);
     selectedDate = selectedDates[0];
