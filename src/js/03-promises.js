@@ -2,7 +2,6 @@ const refs = {
   delay: document.querySelector('input[name=delay]'),
   step: document.querySelector('input[name=step]'),
   amount: document.querySelector('input[name=amount]'),
-  createPromisesBtn: document.querySelector('button[type=submit]'),
   form: document.querySelector('.form'),
 };
 
