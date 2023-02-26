@@ -31,7 +31,7 @@ function formSubmitHandler(e) {
 
 function getPromisesPositions(n) {
   const promisesPositions = [];
-  for (i = 1; i <= n; i += 1) {
+  for (let i = 1; i <= n; i += 1) {
     promisesPositions.push(i);
   }
   return promisesPositions;
