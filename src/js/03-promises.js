@@ -1,17 +1,12 @@
-const refs = {
-  delay: document.querySelector('input[name=delay]'),
-  step: document.querySelector('input[name=step]'),
-  amount: document.querySelector('input[name=amount]'),
-  form: document.querySelector('.form'),
-};
+const formRef = document.querySelector('.form');
 
-refs.form.addEventListener('submit', formSubmitHandler);
+formRef.addEventListener('submit', formSubmitHandler);
 
 function formSubmitHandler(e) {
   e.preventDefault();
-  const delay = Number(refs.delay.value);
-  const step = Number(refs.step.value);
-  const amount = Number(refs.amount.value);
+  const delay = Number(e.target.elements.delay.value);
+  const step = Number(e.target.elements.step.value);
+  const amount = Number(e.target.elements.amount.value);
   getPromisesPositions(amount).reduce((delay, position) => {
     createPromise(position, delay)
       .then(({ position, delay }) => {
