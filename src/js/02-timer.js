@@ -2,15 +2,15 @@ import flatpickr from 'flatpickr';
 import 'flatpickr/dist/flatpickr.min.css';
 import { Report } from 'notiflix/build/notiflix-report-aio';
 
-const btnStart = document.querySelector('button[data-start]');
 const refs = {
   days: document.querySelector('span[data-days]'),
   hours: document.querySelector('span[data-hours]'),
   minutes: document.querySelector('span[data-minutes]'),
   seconds: document.querySelector('span[data-seconds]'),
+  btnStart: document.querySelector('button[data-start]'),
 };
 
-btnStart.disabled = true;
+refs.btnStart.disabled = true;
 let selectedDate = null;
 
 const options = {
@@ -19,26 +19,37 @@ const options = {
   defaultDate: new Date(),
   minuteIncrement: 1,
   onClose(selectedDates) {
-    selectedDates[0] - this.defaultDate < 0
-      ? Report.failure('Please choose a date in the future.')
-      : (btnStart.disabled = false);
+    selectedDates[0] - options.defaultDate < 0
+      ? Report.failure('Error', 'Please choose a date in the future.', 'Okay')
+      : (refs.btnStart.disabled = false);
     selectedDate = selectedDates[0];
-    btnStart.addEventListener('click', onStartTimer);
+    refs.btnStart.addEventListener('click', onStartTimer);
   },
 };
 
 flatpickr('#datetime-picker', options);
 
 function onStartTimer() {
-  setInterval(() => {
-    const { days, hours, minutes, seconds } = convertMs(
-      selectedDate - Date.now()
-    );
-    refs.days.textContent = days;
-    refs.hours.textContent = hours;
-    refs.minutes.textContent = minutes;
-    refs.seconds.textContent = seconds;
+  timerId = setInterval(() => {
+    refs.btnStart.disabled = true;
+
+    const deltaTime = selectedDate - Date.now();
+
+    updateTimerInterface(convertMs(deltaTime));
+
+    if (deltaTime < 1000) {
+      Report.info('Info', "Let's go!", 'Okay');
+      clearInterval(timerId);
+      refs.btnStart.disabled = false;
+    }
   }, 1000);
+}
+
+function updateTimerInterface(time) {
+  refs.days.textContent = time.days;
+  refs.hours.textContent = time.hours;
+  refs.minutes.textContent = time.minutes;
+  refs.seconds.textContent = time.seconds;
 }
 
 function addLeadingZero(value) {

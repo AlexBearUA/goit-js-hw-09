@@ -1,19 +1,29 @@
-const formRef = document.querySelector('.form');
+import { Notify } from 'notiflix/build/notiflix-notify-aio';
 
+const formRef = document.querySelector('.form');
+const createBtnRef = document.querySelector('button[type="submit"]');
+console.log(createBtnRef);
 formRef.addEventListener('submit', formSubmitHandler);
 
 function formSubmitHandler(e) {
-  e.preventDefault();
   const delay = Number(e.target.elements.delay.value);
   const step = Number(e.target.elements.step.value);
   const amount = Number(e.target.elements.amount.value);
+
+  e.preventDefault();
+  createBtnRef.disabled = true;
+
+  setTimeout(() => {
+    createBtnRef.disabled = false;
+  }, delay + step * (amount - 1));
+
   getPromisesPositions(amount).reduce((delay, position) => {
     createPromise(position, delay)
       .then(({ position, delay }) => {
-        console.log(`✅ Fulfilled promise ${position} in ${delay}ms`);
+        Notify.success(`✅ Fulfilled promise ${position} in ${delay}ms`);
       })
       .catch(({ position, delay }) => {
-        console.log(`❌ Rejected promise ${position} in ${delay}ms`);
+        Notify.failure(`❌ Rejected promise ${position} in ${delay}ms`);
       });
     return (delay += step);
   }, delay);
@@ -21,11 +31,11 @@ function formSubmitHandler(e) {
 }
 
 function getPromisesPositions(n) {
-  const promisesNumbers = [];
+  const promisesPositions = [];
   for (i = 1; i <= n; i += 1) {
-    promisesNumbers.push(i);
+    promisesPositions.push(i);
   }
-  return promisesNumbers;
+  return promisesPositions;
 }
 
 function createPromise(position, delay) {
